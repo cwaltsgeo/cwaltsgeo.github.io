@@ -1,101 +1,172 @@
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="initial-scale=1,maximum-scale=1,user-scalable=no"
-    />
-    <title>
-      Basemaps with different projections | Sample | ArcGIS Maps SDK for
-      JavaScript 4.27
-    </title>
 
-    <link
-      rel="stylesheet"
-      href="https://js.arcgis.com/4.27/esri/themes/light/main.css"
-    />
-    <script src="https://js.arcgis.com/4.27/"></script>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Transposed multidimensional ImageryTileLayer | Sample | ArcGIS Maps SDK for JavaScript 4.27</title>
 
-    <style>
-      html,
-      body,
-      #viewDiv {
-        padding: 0;
-        margin: 0;
-        height: 100%;
-        width: 100%;
-      }
-      #srDiv{
-        height: 40px;
-        padding: 10px;
-      }
-    </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.0.0-alpha/Chart.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/underscore@1.13.1/underscore-umd-min.js"></script>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css" />
+  <script src="https://js.arcgis.com/4.27/"></script>
 
-    <script>
-      require([
-        "esri/Map",
-        "esri/views/MapView",
-        "esri/portal/Portal",
-        "esri/widgets/BasemapGallery",
-        "esri/widgets/BasemapGallery/support/PortalBasemapsSource",
-        "esri/widgets/Expand"
-      ], function (
-        Map,
-        MapView,
-        Portal,
-        BasemapGallery,
-        PortalBasemapsSource,
-        Expand
-      ) {
-        const portal = new Portal();
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
 
-        // source for basemaps from a portal group
-        // containing basemaps with different projections
-        const source = new PortalBasemapsSource({
-          portal,
-          query: {
-            id: "bdb9d65e0b5c480c8dcc6916e7f4e099"
-          }
+    #infoDiv {
+      padding: 10px;
+      width: 50vw;
+      height: 50vh;
+      font-size: 14px;
+      overflow-y: hidden;
+      overflow-x: hidden;
+    }
+  </style>
+
+  <script>
+    require([
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/layers/ImageryTileLayer",
+      "esri/widgets/Legend",
+      "esri/widgets/Slider",
+      "esri/widgets/TimeSlider",
+      "esri/widgets/Expand",
+    ], (Map, MapView, ImageryTileLayer, Legend, Slider, TimeSlider, Expand) =>
+      (async () => {
+        let temporalChart;
+
+        const layer = new ImageryTileLayer({
+          url: "https://tiledimageservices.arcgis.com/hRUr1F8lE8Jq2uJo/arcgis/rest/services/cherries_2000_MDTranspose/ImageServer",
         });
 
         const map = new Map({
-          basemap: {
-            portalItem: {
-              id: "8d91bd39e873417ea21673e0fee87604" // nova basemap
-            }
-          }
+          basemap: "dark-gray-vector",
         });
 
-        // center the view over 48 states
+        map.add(layer);
+
         const view = new MapView({
-          container: "viewDiv",
           map: map,
-          center: [-100, 35],
-          zoom: 2,
-          constraints: {
-            snapToZoom: false
-          }
+          container: "viewDiv",
+          center: [-85, 40],
+          zoom: 3,
         });
-        view.ui.add("srDiv", "top-right");
 
-        const bgExpand = new Expand({
+        // add the temporal profile div
+        const infoDiv = document.getElementById("infoDiv");
+        const infoDivExpand = new Expand({
+          expandIcon: "pie-chart",
+          expandTooltip: "Temporal Profile",
           view,
-          content: new BasemapGallery({ source, view }),
-          expandIcon: "basemap"
+          content: infoDiv,
+          expanded: true
         });
-        view.ui.add(bgExpand, "top-right");
+        view.ui.add(infoDivExpand, "bottom-right");
 
-        view.watch("spatialReference", () => {
-          document.getElementById(
-            "srDiv"
-          ).innerHTML = `view.spatialReference.wkid = <b>${view.spatialReference.wkid}</b>`;
+        view.whenLayerView(layer).then(() => {
+          // get all the time dimension values from the service and create an array of dates
+          const bloomDates = layer.rasterInfo.multidimensionalInfo.variables[0].dimensions[0].values.map((val) => new Date(val[1]));
+
+          const timeSlider = new TimeSlider({
+            container: "timeSlider",
+            mode: "time-window",
+            view: view,
+            timeVisible: true,
+            fullTimeExtent: {
+              start: new Date(bloomDates[0]), // Jan 16, 2000,
+              end: new Date(bloomDates[bloomDates.length - 1]) // Dec 15, 2000
+            },
+            // set the stops to match the dates coming from time dimension
+            stops: {
+              dates: bloomDates
+            }
+          });
+          view.ui.add(timeSlider, "bottom-left");
         });
-      });
-    </script>
-  </head>
 
-  <body>
-    <div id="viewDiv"></div>
-    <div id="srDiv" class="esri-widget"></div>
-  </body>
+        // on-click event to handle retrieving the pixel values from the service
+        // formatting the correct dates, then building the temporal profile chart
+        view.on("click", (event) => getBloomSamples(view.toMap(event)));
+        async function getBloomSamples(currentLocation) {
+          const bloomDates = layer.rasterInfo.multidimensionalInfo.variables[0].dimensions[0].values.map((val) => new Date(val[1]));
+
+          if (layer.rasterInfo.hasMultidimensionalTranspose) {
+            var timeExtentStart = layer.timeInfo.fullTimeExtent.start;
+            var timeExtentEnd = layer.timeInfo.fullTimeExtent.end;
+
+            // query for retrieving the pixel values from the service
+            console.log("Querying...")
+            var results = await layer.identify(currentLocation, {
+              processAsMultidimensional: true,
+              transposedVariableName: "ta",
+            }).then((results) => {
+              if (results.dataSeries) {
+                console.log("Data found for this location.");
+                let pixelArray = [];
+                results.dataSeries.forEach((item, i) => {
+                  pixelArray.push(item.value[0]);
+                });
+
+                let dataset = {
+                  // the x-axes, the time slices from the service in a readable format
+                  labels: bloomDates.map((date) => date.toLocaleDateString()),
+                  datasets: [{
+                    label: 'Variable',
+                    // y-axes, the pixeValues array from when a user clicks on any point
+                    data: pixelArray,
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 0)',
+                    tension: 0.5
+                  }]
+                };
+
+                // build the temporal chart, or update the values if it already exists
+                if (!temporalChart) {
+                  temporalChart = new Chart(myChart, { type: 'line', data: dataset })
+                } else {
+                  temporalChart.data = dataset;
+                  temporalChart.update();
+                }
+              }
+              else {
+                console.log("No data found for this location.");
+              }
+            });
+          }
+
+          else {
+            console.log("The service does not have multidimensional transpose.");
+          }
+        }
+
+        const legendExpand = new Expand({
+          expandIcon: "legend",
+          expandTooltip: "Legend",
+          view,
+          content: new Legend({
+            view
+          }),
+          expanded: false
+        });
+        view.ui.add(legendExpand, "top-left");
+      })());
+  </script>
+</head>
+
+<body>
+  <div id="viewDiv"></div>
+  <div id="timeSlider"></div>
+  <div id="infoDiv" class="esri-widget">
+    <canvas id="myChart" style="width:100vw;height:90vh"></canvas>
+  </div>
+</body>
+
 </html>
