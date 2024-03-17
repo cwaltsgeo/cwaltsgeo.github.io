@@ -1,7 +1,3 @@
 ---
 layout: card
 ---
-
----
-layout: card
----
