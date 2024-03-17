@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Welcome
-date: 3/17/2024
+date: 17 March 2024
 tags: test gis maps
 ---
 
