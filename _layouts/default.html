@@ -25,10 +25,8 @@
         <p>{{ site.description | default: site.github.project_tagline }} &#127758; </p>
 
         {% if site.github.is_user_page %}
-        <ul>
-          <li><p class="view"><a href="{{ site.github.owner_url }}"><i style="font-size:24px" class="fa">&#xf09b;</i></a></p></li>
-          <li><p class="view"><a href="https://www.linkedin.com/in/waltsco"><i style="font-size:24px" class="fa">&#xf0e1;</i></a></p></li>
-        </ul>
+          <p class="view"><a href="{{ site.github.owner_url }}"><i style="font-size:24px" class="fa">&#xf09b;</i></a>
+          <a href="https://www.linkedin.com/in/waltsco"><i style="font-size:24px" class="fa">&#xf0e1;</i></a></p>
         {% endif %}
       </header>
       <section>
