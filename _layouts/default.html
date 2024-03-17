@@ -28,11 +28,15 @@
           <p class="view"><a href="{{ site.github.owner_url }}"><i style="font-size:24px" class="fa">&#xf09b;</i></a> | 
           <a href="https://www.linkedin.com/in/waltsco"><i style="font-size:24px" class="fa">&#xf0e1;</i></a></p>
         {% endif %}
-        
+
         {% if page.repo %}
         <ul class="downloads">
           <li><a href="{{ page.repo }}">View On <strong>GitHub</strong></a></li>
         </ul>
+        {% endif %}
+
+        {% if page.tags %}
+          <small>tags: <em>{{ page.tags | join: "</em> - <em>" }}</em></small>
         {% endif %}
       </header>
       <section>
