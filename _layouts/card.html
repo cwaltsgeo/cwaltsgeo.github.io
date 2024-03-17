@@ -28,65 +28,20 @@ layout: default
     <calcite-card-group label="label">
         <calcite-card label="Downtown parking zone">
             <img slot="thumbnail" alt="Sample image alt" src="https://placebear.com/240/180">
-            <span slot="title">Downtown parking zone</span>
-            <calcite-link slot="subtitle">City of AcmeCo</calcite-link>
+            <span slot="title">Kangaroo Island Burn Analysis</span>
+            <calcite-link slot="subtitle">03/17/2024</calcite-link>
             <div slot="footer-end">
-                <calcite-chip value="calcite chip" icon="check-circle" scale="s"></calcite-chip>
-                <calcite-chip value="calcite chip" icon="globe" scale="s"></calcite-chip>
-                <calcite-chip value="calcite chip" icon="security" scale="s"></calcite-chip>
+                <calcite-chip id ="updated" value="calcite chip" icon="check-circle" scale="s"></calcite-chip>
+                <calcite-chip id ="agol" value="calcite chip" icon="globe" scale="s"></calcite-chip>
+                <calcite-chip id ="github" value="calcite chip" icon="code" scale="s"></calcite-chip>
             </div>
             <div slot="footer-start">
-                <calcite-chip value="calcite chip" icon="user" scale="s"></calcite-chip>
+                <a href="../pages/another-page"><calcite-chip id ="view" value="calcite chip" kind="brand" icon="send" scale="m"></calcite-chip></a>
             </div>
         </calcite-card>
-        <calcite-card label="Westside parking zone">
-            <img slot="thumbnail" alt="Sample image alt" src="https://placebear.com/240/180">
-            <span slot="title">Westside parking zone</span>
-            <calcite-link slot="subtitle">City of AcmeCo</calcite-link>
-            <div slot="footer-end">
-                <calcite-chip value="calcite chip" icon="globe" scale="s"></calcite-chip>
-                <calcite-chip value="calcite chip" icon="security" scale="s"></calcite-chip>
-            </div>
-            <div slot="footer-start">
-                <calcite-chip value="calcite chip" icon="user" scale="s"></calcite-chip>
-            </div>
-        </calcite-card>
-        <calcite-card label="Eastside parking zone">
-            <img slot="thumbnail" alt="Sample image alt" src="https://placebear.com/240/180">
-            <span slot="title">Eastside parking zone</span>
-            <calcite-link slot="subtitle">City of AcmeCo</calcite-link>
-            <div slot="footer-end">
-                <calcite-chip value="calcite chip" icon="check-circle" scale="s"></calcite-chip>
-                <calcite-chip value="calcite chip" icon="globe" scale="s"></calcite-chip>
-                <calcite-chip value="calcite chip" icon="security" scale="s"></calcite-chip>
-            </div>
-            <div slot="footer-start">
-                <calcite-chip value="calcite chip" icon="user" scale="s"></calcite-chip>
-            </div>
-        </calcite-card>
-        <calcite-card label="Northwest parking zone">
-            <img slot="thumbnail" alt="Sample image alt" src="https://placebear.com/240/180">
-            <span slot="title">Northwest parking zone</span>
-            <calcite-link slot="subtitle">City of AcmeCo</calcite-link>
-            <div slot="footer-end">
-                <calcite-chip value="calcite chip" icon="globe" scale="s"></calcite-chip>
-                <calcite-chip value="calcite chip" icon="security" scale="s"></calcite-chip>
-            </div>
-            <div slot="footer-start">
-                <calcite-chip value="calcite chip" icon="user" scale="s"></calcite-chip>
-            </div>
-        </calcite-card>
-        <calcite-card label="Northeast praking zone">
-            <img slot="thumbnail" alt="Sample image alt" src="https://placebear.com/240/180">
-            <span slot="title">Northeast parking zone</span>
-            <calcite-link slot="subtitle">City of AcmeCo</calcite-link>
-            <div slot="footer-end">
-                <calcite-chip value="calcite chip" icon="check-circle" scale="s"></calcite-chip>
-                <calcite-chip value="calcite chip" icon="security" scale="s"></calcite-chip>
-            </div>
-            <div slot="footer-start">
-                <calcite-chip value="calcite chip" icon="user" scale="s"></calcite-chip>
-            </div>
-        </calcite-card>
+        <calcite-tooltip reference-element="updated" placement="bottom">Updated</calcite-tooltip>
+        <calcite-tooltip reference-element="agol" placement="bottom">ArcGIS Online</calcite-tooltip>
+        <calcite-tooltip reference-element="github" placement="bottom">GitHub</calcite-tooltip>
+        <calcite-tooltip reference-element="view" placement="right">View</calcite-tooltip>
     </calcite-card-group>
 </body>
