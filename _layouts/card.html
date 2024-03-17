@@ -1,0 +1,40 @@
+---
+layout: default
+---
+
+<head>
+    <style>
+        calcite-card {
+            width: 280px;
+        }
+
+        #example-slotted-footer {
+            flex-flow: row;
+        }
+
+        #example-slotted-action {
+            margin-inline-start: 0.25rem;
+        }
+    </style>
+</head>
+
+<body>
+    <calcite-card>
+        <img slot="thumbnail" alt="Sample image alt" src="https://placebear.com/280/200">
+        <span slot="title">Downtown - 4 mile buffer</span>
+        <span slot="subtitle">City of AcmeCo</span>
+        <div slot="footer-start" id="example-slotted-footer">
+            <calcite-chip id="badge-1" value="calcite chip" icon="check-circle" scale="s"></calcite-chip>
+            <calcite-chip id="badge-2" value="calcite chip" icon="globe" scale="s"></calcite-chip>
+            <calcite-chip id="badge-3" value="calcite chip" icon="security" scale="s"></calcite-chip>
+        </div>
+        <div slot="footer-end">
+            <calcite-chip id="badge-4" value="calcite chip" icon="user" scale="s"></calcite-chip>
+            <calcite-action scale="s" icon="ellipsis" id="example-slotted-action"></calcite-action>
+        </div>
+    </calcite-card>
+    <calcite-tooltip reference-element="badge-1">Verified</calcite-tooltip>
+    <calcite-tooltip reference-element="badge-2">Public</calcite-tooltip>
+    <calcite-tooltip reference-element="badge-3">Secure</calcite-tooltip>
+    <calcite-tooltip reference-element="badge-4">User-created</calcite-tooltip>
+</body>

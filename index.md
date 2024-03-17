@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: card
 ---
 
 *   [Link to another page](pages/another-page).
