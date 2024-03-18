@@ -26,22 +26,40 @@ layout: default
 
 <body>
     <calcite-card-group label="label">
-        <calcite-card label="Downtown parking zone">
-            <img slot="thumbnail" alt="Sample image alt" src="../assets/img/kangaroo_island_result.png">
-            <span slot="title">Kangaroo Island Burn Analysis</span>
+        <calcite-card label="Kangaroo Island">
+            <img slot="thumbnail" alt="Kangaroo Island Image" src="../assets/img/kangaroo_island_result.png">
+            <span slot="title">Kangaroo Island Analysis</span>
             <calcite-link slot="subtitle">03/17/2024</calcite-link>
             <div slot="footer-end">
-                <calcite-chip id ="updated" value="calcite chip" icon="check-circle" scale="s"></calcite-chip>
-                <calcite-chip id ="agol" value="calcite chip" icon="globe" scale="s"></calcite-chip>
-                <calcite-chip id ="github" value="calcite chip" icon="code" scale="s"></calcite-chip>
+                <calcite-chip id ="updated_kangaroo" value="calcite chip" icon="check-circle" scale="s"></calcite-chip>
+                <calcite-chip id ="agol_kangaroo" value="calcite chip" icon="globe" scale="s"></calcite-chip>
+                <calcite-chip id ="github_kangaroo" value="calcite chip" icon="code" scale="s"></calcite-chip>
             </div>
             <div slot="footer-start">
-                <a href="../pages/another-page"><calcite-chip id ="view" value="calcite chip" kind="brand" icon="send" scale="m"></calcite-chip></a>
+                <a href="../pages/another-page"><calcite-chip id ="view_kangaroo" value="calcite chip" kind="brand" icon="send" scale="m"></calcite-chip></a>
             </div>
         </calcite-card>
-        <calcite-tooltip reference-element="updated" placement="bottom">Updated</calcite-tooltip>
-        <calcite-tooltip reference-element="agol" placement="bottom">ArcGIS Online</calcite-tooltip>
-        <calcite-tooltip reference-element="github" placement="bottom">GitHub</calcite-tooltip>
-        <calcite-tooltip reference-element="view" placement="right">View</calcite-tooltip>
+        <calcite-tooltip reference-element="updated_kangaroo" placement="bottom">Updated</calcite-tooltip>
+        <calcite-tooltip reference-element="agol_kangaroo" placement="bottom">ArcGIS Online</calcite-tooltip>
+        <calcite-tooltip reference-element="github_kangaroo" placement="bottom">GitHub</calcite-tooltip>
+        <calcite-tooltip reference-element="view_kangaroo" placement="right">View</calcite-tooltip>
+
+        <calcite-card label="Hexagons">
+            <img slot="thumbnail" alt="Hexagon Image" src="../assets/img/hexagon_result.png">
+            <span slot="title">H3 Hexagons</span>
+            <calcite-link slot="subtitle">03/17/2024</calcite-link>
+            <div slot="footer-end">
+                <calcite-chip id ="updated_hex" value="calcite chip" icon="check-circle" scale="s"></calcite-chip>
+                <calcite-chip id ="agol_hex" value="calcite chip" icon="globe" scale="s"></calcite-chip>
+                <calcite-chip id ="github_hex" value="calcite chip" icon="code" scale="s"></calcite-chip>
+            </div>
+            <div slot="footer-start">
+                <a href="../pages/another-page"><calcite-chip id ="view_hex" value="calcite chip" kind="brand" icon="send" scale="m"></calcite-chip></a>
+            </div>
+        </calcite-card>
+        <calcite-tooltip reference-element="updated_hex" placement="bottom">Updated</calcite-tooltip>
+        <calcite-tooltip reference-element="agol_hex" placement="bottom">ArcGIS Online</calcite-tooltip>
+        <calcite-tooltip reference-element="github_hex" placement="bottom">GitHub</calcite-tooltip>
+        <calcite-tooltip reference-element="view_hex" placement="right">View</calcite-tooltip>
     </calcite-card-group>
 </body>
