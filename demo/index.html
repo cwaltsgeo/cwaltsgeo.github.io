@@ -5,11 +5,8 @@
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <title>CO2 Atmospheric Flow</title>
 
-    <!-- Load chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/dark/main.css" />
-    <script src="https://js.arcgis.com/4.29/"></script>
+    <link rel="stylesheet" href="https://jsdev.arcgis.com/4.30/esri/themes/dark/main.css" />
+    <script src="https://jsdev.arcgis.com/4.30/"></script>
 
     <style>
         html,
@@ -29,8 +26,9 @@
             "esri/layers/support/VideoElement",
             "esri/layers/support/ExtentAndRotationGeoreference",
             "esri/geometry/Extent",
+            "esri/core/events"
         ], (
-            Map, SceneView, MediaLayer, VideoElement, ExtentAndRotationGeoreference, Extent
+            Map, SceneView, MediaLayer, VideoElement, ExtentAndRotationGeoreference, Extent, events
         ) => {
             // create a video element by setting video param to point to the video file url
             // set the geographic location of the video file on the map using an extent
@@ -48,6 +46,27 @@
                     })
                 })
             });
+
+            // ***** workaround start ******
+            element._loadVideo = (video) => {
+                return new Promise((resolve, reject) => {
+                    const canPlayHandle = events.once(video, "canplay", () => {
+                        video.playsInline = true;
+                        video.play().then(resolve, reject);
+                        resolve();
+                    });
+
+                    if (video.crossOrigin !== "anonymous") {
+                        video.crossOrigin = "anonymous";
+
+                        if (!video.src?.includes("blob:")) {
+                            video.src = video.src;
+                        }
+                    }
+                });
+            };
+
+            // ****** workaround end ******
 
             // add the video element to the media layer
             const layer = new MediaLayer({
@@ -89,17 +108,15 @@
                 }
             });
 
-            // Function to rotate the map
             function rotateMap() {
                 let camera = view.camera.clone();
-                camera.position.longitude -= 0.3;  // Change this value to adjust the speed of rotation
+                camera.position.longitude -= 0.3;
 
                 view.goTo(camera, {
-                    animate: false  // Prevents easing animation during rotation
+                    animate: false
                 });
             }
 
-            // Call the rotateMap function every 100 milliseconds
             setInterval(rotateMap, 50);
         });
 
